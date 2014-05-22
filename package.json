@@ -1,0 +1,17 @@
+{
+  "name": "fourism",
+  "version" : "0.0.1",
+  "description" : "May the fours be with you",
+  "homepage": "https://github.com/gtanner/fourism",
+  "author": "gtanner",
+  "contributors": [{
+    "name": "Gord Tanner",
+    "email": "gtanner@gmail.com",
+    "url": "http://github.com/gtanner"
+  }],
+  "licenses": [{
+    "type": "MIT",
+    "url" : "http://opensource.org/licenses/MIT"
+  }],
+  "main": "./lib/4our"
+}
