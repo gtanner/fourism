@@ -14,6 +14,7 @@ Object.keys(counts).forEach(function (turns) {
   console.log(
     "turns:", turns, 
     "\tcount:", counts[turns], 
-    "\tavg:", Math.floor(counts[turns] / max * 100)
+    "\tavg:", Math.floor(counts[turns] / max * 100),
+    "%"
   );
 });
