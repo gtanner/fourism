@@ -13,5 +13,9 @@
     "type": "MIT",
     "url" : "http://opensource.org/licenses/MIT"
   }],
+  "dependencies": {
+    "async": "0.2.10",
+    "zmq": "2.6.0"
+  },
   "main": "./lib/4our"
 }

@@ -1,36 +1,38 @@
-var cluster = require('cluster');
+var cluster = require('cluster'),
+    async = require('async'),
+    utils = require('./lib/utils');
 
 if (cluster.isMaster) {
-  cluster.fork({ start: 1, end: 1000000 });
-  cluster.fork({ start: 1000000, end: 2000000 });
-  cluster.fork({ start: 2000000, end: 3000000 });
-  cluster.fork({ start: 3000000, end: 4000000 });
-  cluster.fork({ start: 4000000, end: 5000000 });
+  function send(start, end, callback) {
+    cluster.fork({
+      start: start,
+      end: end
+    }).on('message', function (msg) {
+      callback(null, msg);
+    });
+  } 
 
   function handle(msg) {
-    console.log("from", msg.start, "to", msg.end);
-    Object.keys(msg.result).forEach(function (turns) {
-      console.log(
-        "turns:", turns, 
-        "\tcount:", msg.result[turns], 
-        "\tavg:", Math.floor(msg.result[turns] / (msg.end - msg.start) * 100),
-        "%"
-      );
-    });
+    utils.log(msg.start, msg.end, msg.result);
   };
 
-  Object.keys(cluster.workers).forEach(function(id) {
-    cluster.workers[id].on('message', handle);
+  async.parallel([
+    async.apply(send, 1, 1000000),
+    async.apply(send, 1000000, 2000000), 
+    async.apply(send, 2000000, 3000000),
+    async.apply(send, 3000000, 4000000), 
+    async.apply(send, 4000000, 5000000)
+  ], function (err, results) {
+    results.forEach(handle);
   });
 }
 else {
   var wordify = require('./lib/wordify'),
       fourism = require('./lib/4our');
 
-  var max = process.env.end,
-      counts = {};
+  var counts = {};
 
-  for (var x = process.env.start; x < max; x++) {
+  for (var x = process.env.start; x < process.env.end; x++) {
     var turns = fourism(wordify(x));
     counts[turns] = ++counts[turns] || 1;
   }
