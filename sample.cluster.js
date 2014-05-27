@@ -3,10 +3,10 @@ var cluster = require('cluster'),
     utils = require('./lib/utils');
 
 if (cluster.isMaster) {
-  function send(start, end, callback) {
+  function send(range, callback) {
     cluster.fork({
-      start: start,
-      end: end
+      start: range.start,
+      end: range.end
     }).on('message', function (msg) {
       callback(null, msg);
     });
@@ -17,11 +17,11 @@ if (cluster.isMaster) {
   };
 
   async.parallel([
-    async.apply(send, 1, 1000000),
-    async.apply(send, 1000000, 2000000), 
-    async.apply(send, 2000000, 3000000),
-    async.apply(send, 3000000, 4000000), 
-    async.apply(send, 4000000, 5000000)
+    async.apply(send, utils.range(0)),
+    async.apply(send, utils.range(1)), 
+    async.apply(send, utils.range(2)),
+    async.apply(send, utils.range(3)), 
+    async.apply(send, utils.range(4))
   ], function (err, results) {
     results.forEach(handle);
   });
