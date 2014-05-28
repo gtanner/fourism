@@ -17,5 +17,5 @@
     "async": "0.2.10",
     "zmq": "2.6.0"
   },
-  "main": "./lib/4our"
+  "bin": "./bin/fourism.js"
 }
