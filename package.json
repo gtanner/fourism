@@ -1,6 +1,6 @@
 {
   "name": "fourism",
-  "version" : "0.1.1",
+  "version" : "0.1.2",
   "description" : "May the fours be with you",
   "homepage": "https://github.com/gtanner/fourism",
   "author": "gtanner",
@@ -16,6 +16,7 @@
   "dependencies": {
     "async": "0.2.10",
     "commander": "*",
+    "prompt": "*",
     "zmq": "2.6.0"
   },
   "bin": "./bin/fourism.js"
