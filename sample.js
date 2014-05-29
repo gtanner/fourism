@@ -1,7 +1,8 @@
 var wordify = require('./lib/wordify'),
     utils = require('./lib/utils'),
-    fourism = require('./lib/4our');
+    fourism = require('./lib/fourism');
 
+//Range by millions 1 to 1,000,000
 var range = utils.range(0),
     counts = {};
 

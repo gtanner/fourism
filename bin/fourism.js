@@ -88,7 +88,7 @@ program
       push.connect('tcp://' + ip + ':1338');
 
       var wordify = require('./../lib/wordify'),
-          fourism = require('./../lib/4our');
+          fourism = require('./../lib/fourism');
 
 
       pull.on('message', function (start, end) {

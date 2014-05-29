@@ -28,7 +28,7 @@ if (cluster.isMaster) {
 }
 else {
   var wordify = require('./lib/wordify'),
-      fourism = require('./lib/4our');
+      fourism = require('./lib/fourism');
 
   var counts = {};
 
