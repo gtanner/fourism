@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 var zmq = require('zmq'),
     async = require('async'),
+    uuid = require('uuid'),
     cluster = require('cluster'),
     utils = require('./../lib/utils');
     push = zmq.socket('push'),
@@ -19,7 +20,7 @@ program
     push.bindSync('tcp://*:1337');
     pull.bindSync('tcp://*:1338');
 
-    var workers = 0, callbacks = [];
+    var workers = {}, callbacks = [];
 
     pull.on('message', function (msg, data) {
       msg = msg.toString();
@@ -31,8 +32,13 @@ program
           return cb && cb(null, data);
           break;
         default:
-          workers++;
-          console.log('worker connected,', workers, 'are in the house');
+          var count = Object.keys(workers).length;
+          workers[data] = 1;
+          var updated = Object.keys(workers).length;
+
+          if (count !== updated) {
+            console.log('worker connected,', updated, 'are in the house');
+          }
       }
     });
 
@@ -110,7 +116,8 @@ program
         })]);
       });
 
-      setTimeout(function () { push.send(['hello', 3]); }, 10);
+      var id = JSON.stringify(uuid.v4());
+      setInterval(function () { push.send(['hello', id]); }, 1000);
     }
   });
 
