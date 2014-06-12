@@ -2,20 +2,20 @@ var cluster = require('cluster'),
     async = require('async'),
     utils = require('./lib/utils');
 
+function send(range, callback) {
+  cluster.fork({
+    start: range.start,
+    end: range.end
+  }).on('message', function (msg) {
+    callback(null, msg);
+  });
+} 
+
+function handle(msg) {
+  utils.log(msg.start, msg.end, msg.result);
+}
+
 if (cluster.isMaster) {
-  function send(range, callback) {
-    cluster.fork({
-      start: range.start,
-      end: range.end
-    }).on('message', function (msg) {
-      callback(null, msg);
-    });
-  } 
-
-  function handle(msg) {
-    utils.log(msg.start, msg.end, msg.result);
-  };
-
   async.parallel([
     async.apply(send, utils.range(0)),
     async.apply(send, utils.range(1)), 

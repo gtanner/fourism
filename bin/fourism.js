@@ -3,7 +3,7 @@ var zmq = require('zmq'),
     async = require('async'),
     uuid = require('uuid'),
     cluster = require('cluster'),
-    utils = require('./../lib/utils');
+    utils = require('./../lib/utils'),
     push = zmq.socket('push'),
     pull = zmq.socket('pull');
 
@@ -30,7 +30,6 @@ program
         case 'result':
           var cb = callbacks.pop();
           return cb && cb(null, data);
-          break;
         default:
           var count = Object.keys(workers).length;
           workers[data] = 1;
